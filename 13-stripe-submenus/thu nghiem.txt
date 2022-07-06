@@ -1,0 +1,292 @@
+
+// index.js 
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App.js'
+import './index.css'
+
+ReactDOM.render(
+	<React.StrictMode>
+	</App>
+	</React.StrictMode>,
+	document.getElementById('root')
+)
+
+
+// data.js 
+import React from 'react'
+import { FaCreditCard, FaBook, FaBriefcase } from 'react-icons/fa';
+
+const data = [
+	{	
+	text: 'product',
+	content: [
+	{ label: 'plugins', icon: <FaBook />, url: '/products' },
+     	{ label: 'libraries', icon: <FaBook />, url: '/products' },
+     	{ label: 'help', icon: <FaBook />, url: '/products' },
+      	{ label: 'billing', icon: <FaBook />, url: '/products' },
+	]
+
+    }
+	,
+
+	{
+	text: 'developers',
+	content: [
+	{ label: 'plugins', icon: <FaBook />, url: '/products' },
+        { label: 'libraries', icon: <FaBook />, url: '/products' },
+        { label: 'help', icon: <FaBook />, url: '/products' },
+        { label: 'billing', icon: <FaBook />, url: '/products' }, 
+	]
+
+    }
+	
+,
+
+	{
+	text: 'company',
+	content: [
+	 { label: 'about', icon: <FaBriefcase />, url: '/products' },
+         { label: 'customers', icon: <FaBriefcase />, url: '/products' }, 
+	]
+	
+    }
+]
+
+export default data; 
+
+
+
+// context.js 
+import React, {useState,useContext, createContext} from 'react'
+
+const myContext = createContext()
+
+functon AppProvider ({children}) {
+
+const [isSubMeNuOpen, setIsSubMeNuOpen] = useState(false)
+const [location, setLocation] 		= useState({})
+const [isSideBarOpen, setIsSideBarOpen] = useState(false)
+const [page, setPage] 			= useState({text:'', content:[]})
+
+
+// function 
+
+
+function openSideBar() {
+	setIsSideBarOpen(true)
+}
+
+
+function closeSideBar() {
+	setIsSideBarOpen(false)
+}
+
+
+
+
+function OpenSubMeNu(text, coordinate) {
+const sublinks = data.filter((item) => item.text === text )
+setLocation(coordinate)
+setPage(sublinks)
+setIsSubMeNuOpen(true)
+}
+
+
+function displayMenu(e) {
+const text = e.target.value
+const targetBtm = e.target.getBoundingClientRect()
+const center = (targetBtm.right - targetBtm.left) / 2
+const bottom = targetBtm.bottom
+
+OpenSubMeNu(text, {center, bottom})
+}
+ 
+	return 	<myContext.Provider  value {{location, setIsSubMeNuOpen, isSideBarOpen, page,  setLocation, openSubMeNu, openSideBar, closeSideBar, displayMenu}}>		
+			{children}
+		</myContext.Provider>
+}
+
+function useGlobalVariable = () => {
+	return useContext(myContext)
+}
+
+export {useGlobalVariable, AppProvider} 
+
+// app.js base on HTML 
+import React, {useEffect, useRef} from 'react'
+import Main from 'Main.js'
+import Navbar from 'Navbar.js'
+import {useGlobalVariable} from './context'
+
+function App () {
+// UseRef 
+const navbarRef = useRef (null)
+
+// CONTEXT 
+const {
+	location, 
+	setIsSubMenuOpen,
+	isSideBarOpen,
+	setIsSideBarOpen,
+ 	page,  
+	setLocation,
+ 	openSubMeNu,
+ 	openSideBar, 
+	closeSideBar,
+	displayMenu
+	}
+
+
+useEffect (() => {
+	if(!navbarRef.current.classList.contains('btn')){
+	openSideBar()
+	}
+		
+})
+	return (
+	<div className = "stripe">
+
+		<Navbar ref = {navbarRef}>
+		{isSideBarOpen && </Sidebar>}
+		{isSubMenuOpen && </SubMeNu>}
+		</Navbar>
+
+		</Hero>
+				
+	</div>
+	)
+}
+
+
+
+// Navbar.js 
+
+import React from 'react'
+import FaBars from 'react-icon/fa'
+import data from './data.js'
+function Navbar () {
+
+	return (
+	<navbar>
+	<div className = "title">
+	<img src = {logo} atr= "image"/>
+	</div>	
+
+	<div className = "content">
+	
+		{data.map ((item) => return (<span onClick = {() => displayMeNu(e)}> {item.text} </span>))}
+	</div>
+
+	<div className = "btn">
+		
+	<button> sign in </button>
+	
+	<span className = "open-close" onClick = {() => setIsSideBarOpen(!isSideBarOpen)}> <FaBars/> </span>
+
+	</div>
+	</navbar>
+	)
+
+}
+
+
+// Sidebar.js 
+import data from 'data.js' 
+import React from 'react'
+function SideBar () {
+
+	return (
+		<div className = "sidebar">
+		
+		<div className = "container">
+		{data.map((item) => return (
+		const {text, content} = item
+		<div className = "item">
+		<p> text}</p>
+		<div> {content.map((item) => return (
+		<div>
+		<span> {item.icon}  </span>
+		<span> {item.lable} </span>
+		</div>
+		))} {</div>
+		</div>
+		))}
+
+		</div>
+		</div>
+		)
+
+}
+
+
+
+// SubMeNu.js 
+import React from 'react' 
+function SubMeNu () {
+
+return (
+	<div className = "subMeNu">
+	<div className = "direction"></div>
+	<div className = "container-item">
+	{page.sublinks.map((item)=> 
+	const {text, content} = item
+	return (
+		<div className = "container">
+
+		{data.map((item) => return (
+		const {text, content} = item
+		<div className = "item">
+		<p> text}</p>
+		<div> {content.map((item) => return (
+		<div>
+		<span> {item.icon}  </span>
+		<span> {item.lable} </span>
+		</div>
+		))} {</div>
+		</div>
+		))}
+
+		</div>
+		)
+
+	)}
+	</div>
+
+	</div>
+	)
+
+}
+
+
+
+// Hero.js 
+import {logo} from './image"
+import React from 'react' 
+function Hero () {
+
+	return (
+	<div className = "hero">
+
+	<div className = "describe-content">
+	<p> </p>
+	<p> </p>
+	<button> learn more </button>
+	</div>
+
+	<div className = "image">
+	<img src = {logo}>
+	</div>
+	</div>
+
+	)
+
+}
+
+// index.css 
+
+
+// biết được ý tưởng, cách làm rồi bắt tay vào làm cụ thể 
+
+

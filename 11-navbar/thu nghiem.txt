@@ -1,0 +1,111 @@
+// index.js 
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './App.css'
+import App from './App.js'
+
+ReactDOM.render(
+	<React.StrictMode>
+	</App>
+	</React.StrictMode>, document.getElementById('root'))
+
+
+// data.js 
+import React from 'react' 
+import { FaBehance, FaFacebook, FaLinkedin, FaTwitter } from 'react-icons/fa'
+const sections = [
+	{
+	text: 'Home',
+	link: 'https://'	
+	},
+	
+	{
+	text: 'About',
+	link: 'https://'
+	}, 
+
+	{
+	text: 'Products',
+	link: 'https://'
+	},
+
+	{
+	text: 'Author',
+	link: 'https://'
+	}
+]
+
+
+const icons = [	
+	{
+	icon: <Fa -Facebook>,
+	link: 'https: // '
+	},
+
+	{
+	icon: <Fa -Facebook>,
+	link: 'https: // '
+	},
+
+	{
+	icon: <Fa -Facebook>,
+	link: 'https: // '
+	}
+
+]
+
+export {icons, sections} from data.js
+
+
+
+
+// App.js
+
+import React, {useState, useEffect} from 'react'
+import {sections, icons} from './data.js'	
+import { FaBars } from 'react-icons/fa'
+ 
+function App () {
+const navbar = React.useRef(null)
+const sections = React.useRef(null)
+const [status, setStatus] = useState(false)
+
+	useEffect (() => {
+	navbar.getBoundingClientRect().height = ref.getBoundingClientRect().height
+	}, [status])
+
+	function toggle = () => {
+	setStatus(!status)
+	}
+
+	return (
+	<div className = "App">
+	<div className = "Navbar" ref = {navbar}>
+	<div className = 'title'> Codding addict </div>
+
+	<div className ="sections"  ref = {section}> 
+	<ul className = {"container-items" status? 'doc':'ngang' }>
+	{sections.map ((item) => 
+	<li> <a href = {item.link}> {item.text} </a></li>)}		
+	</ul>
+	
+	
+	<div className = "icons">
+	{icons.map ((icon) => 
+	const {icon, link} = icon
+	return <span> <a href = {link}> {icon}  </a> </span>
+	)}
+	</div>
+
+	<div className = "absolute-icon" onClick = {() => toggle()}><FaBars/> </div>
+	</div>
+	
+
+	</div>
+	</div>
+	)
+
+}
+
+// index.css 

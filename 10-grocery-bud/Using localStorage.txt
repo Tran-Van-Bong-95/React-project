@@ -1,0 +1,188 @@
+
+
+// App.js
+import React, {useEffect, useState} from 'react'
+
+const getItem = () => {
+
+	const list = localStorage('grocery')
+	const newList = JSON.parse(list)
+
+	if(list){
+	return newList
+	}else{
+	return []
+	}
+
+	}
+
+
+	function App () {
+
+	const [edit, setEdit] = useState(false)
+	const [list, setList] = useState(getItem)
+	const [alert, setAlert] = useState({show: false, msg:'', type:''})
+	const [value, setValue] = useState({text:''})
+	const [editId, setEditId] = useState(null)
+
+	const handleSubmit (e) => {
+	
+	e.preventDefault()
+	
+	if (!value && !edit){
+	showAlert(true,'empty value' , 'success')
+	}
+
+
+	if (value && !edit){
+	showAlert(true,'add value' , 'success')
+	setList([...list, value])
+
+	// turn original status	
+	setValue({text: ''})
+	
+	}
+
+	if(value && edit){
+	
+	if(!list.includes(value)){
+	const newList = list.map((item) => {
+	if(item.id === editId){
+	return {
+	text: value,
+	id: editId
+	}
+	}
+	return item
+	})
+	
+	setList(newList)
+	}
+
+	}
+	showAlert(true,'edit successfully' , 'success')
+
+	// turn original status
+	
+	setValue({text: ''})
+	setEdit(false)	
+	setEditId(null)
+	}
+
+	}
+
+	function remove (id) {
+	const newList = list.filter((item) => item.id !== id)
+	setList (newList)
+	showAlert(true, 'remove item successfuly', 'success')
+  	}
+
+	function edit(id) {	
+	const newList = list.find((item) => item.id === id)
+	setValue(newList.text)
+	setEditId(newList.id)
+	setEdit(true)
+	}
+
+	function clearAll(){
+	setList([])
+	showAlert(true, 'clear all item successfuly', 'success')
+	}
+
+	function showAlert (show = false,msg='',type='') => {	
+	setAlert({show,msg,type})
+	}
+
+	useEffect (() => {
+
+	localStorage.setItem('grocery', JSON.stringify())
+	},[value])
+
+
+	return (
+	
+	<div className = 'container'>
+
+	<Alert {...alert}  setAlert = {setAlert} list = {list} />
+	
+	<form onSubmit = {handleSubmit}>
+	
+	<input type = 'text'
+	value = {value}
+	onChange = {() => setValue({text: value, id: new Date().getTime().toString()})}
+	/> 
+	</form>
+
+	<button>
+	{edit? 'edit': 'submit'}  
+	</button>
+	
+	{list.length > 0 && 
+	<List list = {list} remove = {remove}  edit = {edit} />
+	<button onClick = {() => clearAll()}> clear all </button>
+	}
+	</div>
+	)
+	
+
+}
+
+// List.js 
+import React from 'react'
+
+	function List ({list, remove, edit}){
+	
+	list.map((item) => {
+	const {text, id) = item
+
+	return (<div className  = "item">
+	<span> {item} </span> 
+	<span onClick = {() => remove(id)}> delete </span>
+	<span onClick = {() => edit(id)}> edit   </span>
+	</div>)
+		
+	}
+
+	}	
+
+	export default List 
+
+
+// Alert.js
+
+	import React, {useEffect} from 'react'
+
+	function Alert ({show, msg, type, setAlert,list}) {
+
+	
+	useEffect(()=>
+	setTimeout (()=> {
+	setAlert({show:false,msg:'',type:''})
+	},3000)
+	},[list])
+
+	return (
+	<div className = 'alert'>	
+	<p className = {type}> {msg} </p>
+	</div>
+	)
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

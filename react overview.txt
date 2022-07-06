@@ -1,0 +1,465 @@
+
+// App.js
+class App  extends Component {
+render() {
+const characters = [
+	{
+	name: 'Charlie',
+	job: 'Janitor',
+	},
+
+	{
+	name: 'Mac',
+	job: 'Bouncer',
+	},
+
+	{
+	name: 'Dee',
+	job: 'Aspring actress',
+	},
+	
+	{
+	name: 'Dennis',
+	job: 'Bartender',
+	},
+]
+
+
+return (
+	<div className = "container">
+		<Table  characterData = {characters}/>
+// giá trị của poperty characterData là giá trị của biến characters ở trên là 1 array of object 
+	</div>
+)
+
+	}
+}
+
+
+// Table.js
+
+class Table  extends  Component {
+	render() {
+	const {characterData}  =  this.props;
+// cách viết trên tương tự như const characterData = this.props.characterData;
+// this ở đây là object cái được tạo ra bởi class Component Table 
+=> props là 1 object 
+	return (
+	<table> 
+	<TableHeader />
+// thiết lập property characterData cho props object 
+	<TableBody  characterData = {characterData} />
+// gán giá trị của biến characterData là 1 array ở trên vào property characterData 
+của component TableBody 
+
+	</table>
+)
+
+}
+
+}
+
+
+// Table.js
+const TableBody = (props) => {
+	const rows = props.characterData.map((row, index)  => {
+// ở trên ta đã thiết lập cho props object 1 property là characterData 
+có giá trị là 1 array of object  => props.characterData là 1 array 
+	return (
+	<tr key = {index}>
+	<td> {row.name} </td>
+	<td> {row.job} </td>
+	</tr>
+)
+})
+
+	return <tbody> {rows} </tbody>
+}
+
+
+}
+// props là 1 cách hiệu quả để truyền vào dữ liệu đang tồn tại tới 1
+React component, tuy nhiên the component không thể thay đổi the props 
+they're read only. In the next section, we'll learn how to use state
+to have further control over handling data in React. 
+
+2. State 
+Ngay bây giờ đây chúng ta đang lưu trữ our character data in an array in 
+a variable, and passing it through as props. This is good to start, 
+nhưng thử tưởng tượng nếu chúng ta muốn có khả năng xoá 1 item từ array 
+Với props, chúng ta có luồng dữ liệu 1 chiều (we have a one way data flow), 
+nhưng với state chúng ta có thể upgrade private data from a component. 
+
+You can think of state as any data that should be saved and modified without 
+necessarily being added to a database - for example, adding and removing items
+from a shopping cart before confirming your purchase.
+
+
+// APP.js
+
+class App extends Component {
+
+	state = {}
+}
+
+The object will contain properties for everything you want to store in 
+the state. For us, it's characters 
+
+class App  extends Component {
+	state = {
+	characters: [],
+}
+}
+
+Move the entire array of objects we created earlier into state.characters.
+
+class App  extends Component {
+state = {
+	characters: [
+	{
+	name: 'Charlie',
+	// the rest of the data
+	},
+],
+
+}
+
+}
+
+
+Our data thì chính thức được chứa trong the state. Bởi vì chúng ta muốn 
+có khả năng để remove 1 character từ the table, chúng ta sẽ tạo ra 1 
+removeCharacter method trên the parent App class.
+
+Để truất xuất trạng thái, chúng ta sẽ get this.state.characters  sử dụng 
+same ES6 method trước đó. Để update the state, chúng ta sẽ sử dụng this.setState()
+1 method được xây dựng cho việc thao túng state. 
+
+Lưu ý: bạn phải sử dụng this.setState() để chỉnh sửa 1 array. Đơn giản việc áp dụng 
+1 new value tới this.state.property sẽ not work 
+
+removeCharacter = (index) => {
+  const {characters} = this.state;
+
+  this.setState (
+{
+	characters: characters.filter((character, i) => {
+	return i !== index
+	}),
+}
+)
+// this.setState  sẽ tạo ra 1 object có property là characters với giá trị 
+là 1 array đã được filter để tìm và trả về 1 array có các object mà chỉ số 
+khác với index được truyền vào trong hàm removeCharacter (thoả mãn điều kiện trong phần return)
+}
+
+}
+
+
+Nào bây giờ chúng ta sẽ truyền that function thông qua the component và render 1 button next 
+to each character that can invoke the function. 
+We'll pass the removeCharacter function through as a prop to Table 
+
+// App.js
+render () {
+	const {characters} = this.state;
+
+	return (
+	<div className = "container"> 
+	  <Table characterData = {characters}  removeCharacter = {this.removeCharacter} />
+	// this ở đây là props object cái mà chứa removeCharacter as a property 
+	</div>
+	)
+}
+
+Since we're passing it down to TableBody from Table, we're going to have to pass it through again as a prop, just like we did with the character data.
+
+In addition, since it turns out that the only components having their own states in our project are App and Form, it would be best practice to transform Table into a simple component from the class component it currently is.
+
+src/Table.js
+const Table = (props) => {
+  const {characterData, removeCharacter} = props
+
+  return (
+    <table>
+      <TableHeader />
+      <TableBody characterData={characterData} removeCharacter={removeCharacter} />
+    </table>
+  )
+}
+
+// qua phần state ta sẽ hiểu cách state được khởi tạo và được sửa đổi 
+
+// complete code 
+
+class App extends Component {
+
+state = {
+    characters: [
+       {
+        name: 'Charlie',
+        job: 'Janitor',
+      },
+      {
+        name: 'Mac',
+        job: 'Bouncer',
+      },
+      {
+        name: 'Dee',
+        job: 'Aspring actress',
+      },
+      {
+        name: 'Dennis',
+        job: 'Bartender',
+      },
+    ],
+  
+}
+
+removeCharacter = (index) => {
+  const {characters} = this.state
+
+  this.setState({
+    characters: characters.filter((character, i) => {
+      return i !== index
+    }),
+  })
+}
+render() {
+
+  const { characters } = this.state
+// characters được tạo ra bằng với characters ở trên khi chưa bị xoá 
+// this ở đây là App class component  
+
+  return (
+    <div className="container">
+// this ở đây là App class component. thiết lập 2 properties đối với 
+Table component as props 
+      <Table characterData={characters} removeCharacter={this.removeCharacter} />
+    </div>
+  )
+}
+
+
+const Table = (props) => {
+  const {characterData, removeCharacter} = props
+// tạo ra 2 biến chứa 2 thuộc tính của props of table đã thiết lập ở trên 
+
+  return (
+    <table>
+      <TableHeader />
+      <TableBody characterData={characterData} removeCharacter={removeCharacter} />
+    </table>
+  )
+}
+
+
+const TableBody = (props) => {
+  props.characterData.map((row, index) => {
+    return (
+     <tr key={index}>
+  <td>{row.name}</td>
+  <td>{row.job}</td>
+  <td>
+    <button onClick={() => props.removeCharacter(index)}>Delete</button>
+  </td>
+</tr>
+    )
+ })
+
+  return <tbody>{rows}</tbody>
+}
+
+
+
+3. Submiting the form 
+ở trên ta có khả năng xoá, nhưng nếu ta muốn thêm new data to state giống như to-do list 
+hay shopping cart 
+
+In a real world application, you'd more likely start with empty state and add to it, such as with a to-do list or a shopping cart.
+
+
+class App extends Component {
+	state = {
+	characters: [];
+}
+
+}
+
+// Bây giờ chúng ta sẽ tạo 1 Form component 
+
+Chúng ta sẽ thiết lập initial state of the Form để trở thành 1 object 
+với some empty properties và gán initial state đó tới this.state
+
+class Form extends Component {
+initialState = {
+	name: '',
+	job: '',
+
+}
+	state = this.initialState
+}
+
+// Mục đích của chúng ta khi tạo ra this form này là update the state of Form 
+mỗi lần a field được thay đổi in the form, và khi chúng ta submit
+all that data sẽ truyền tới App state cái sẽ update the Table 
+
+
+Đầu tiên, chúng ta sẽ tạo function cái sẽ chạy mỗi lần 1 sự thay đổi 
+được tạo ra tới an input. The event sẽ được truyền qua, và chúng ta 
+sẽ thiết lập the state of Form để có name(key) và value of the inputs 
+
+class Form extends Component {
+initialState = {
+	name: '',
+	job: '',
+
+}
+	state = this.initialState
+
+// khi nhập giá trị nào sẽ gán giá trị đó 
+handleChange = (event) => {
+  const {name, value} = event.target
+
+thiết lập name property trong state object có giá trị vừa được nhập vào 
+  this.setState({
+    [name]: value,
+  })
+}
+
+render() {
+  const { name, job } = this.state;
+
+  return (
+    <form>
+      <label htmlFor="name">Name</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value={name}
+        onChange={this.handleChange} />
+      <label htmlFor="job">Job</label>
+      <input
+        type="text"
+        name="job"
+        id="job"
+        value={job}
+        onChange={this.handleChange} />
+    </form>
+  );
+}
+
+}
+export default Form;
+
+// The onchange event occurs when the value of an element has been changed.
+
+For radiobuttons and checkboxes, the onchange event occurs when the checked state has been changed.
+
+
+
+// App.js 
+return (
+  <div className="container">
+    <Table characterData={characters} removeCharacter={this.removeCharacter} />
+    <Form handleSubmit={this.handleSubmit} />
+  </div>
+)
+
+
+// chúng ta vẫn chưa có submit button. Chúng ta sẽ tạo ra 1 function gọi là 
+handleSubmit() trên App cái sẽ update the state bằng cách lấy 
+the existing this.state.characters and adding the new character parameter, using the ES6 spread operator.
+
+handleSubmit = (character) => {
+  this.setState({characters: [...this.state.characters, character]})
+}
+// thiết lập 1 object state có property là characters với giá trị là 1 array đã được update 
+giờ đây không còn là empty array nữa 
+
+
+// Form.js 
+trong form ta sẽ tạo 1 method submitForm() cái sẽ gọi hàm này và truyền state của From 
+qua như character parameter chúng ta đã định nghĩa trước đó. 
+Nó sẽ reset the state to initial state và clear the form sau khi submit 
+
+submitForm = () => {
+  this.props.handleSubmit(this.state)
+  this.setState(this.initialState)
+}
+
+
+<input type="button" value="Submit" onClick={this.submitForm} />
+the click sẽ gọi sunmitForm 
+
+class App extends Component {
+	state = {
+	characters: [];
+}
+
+handleSubmit = (character) => {
+  this.setState({characters: [...this.state.characters, character]})
+}
+
+submitForm = () => {
+  this.props.handleSubmit(this.state)
+  this.setState(this.initialState)
+}
+
+return (
+  <div className="container">
+    <Table characterData={characters} removeCharacter={this.removeCharacter} />
+    <Form handleSubmit={this.handleSubmit} />
+  </div>
+)
+
+
+}
+
+
+class Form extends Component {
+initialState = {
+	name: '',
+	job: '',
+
+}
+	state = this.initialState
+
+
+handleChange = (event) => {
+  const {name, value} = event.target
+
+  this.setState({
+    [name]: value,
+  })
+}
+
+render() {
+  const { name, job } = this.state;
+
+  return (
+    <form>
+      <label htmlFor="name">Name</label>
+     <input type="button" value="Submit" onClick={this.submitForm} />
+        type="text"
+        name="name"
+        id="name"
+        value={name}
+        onChange={this.handleChange} />
+      <label htmlFor="job">Job</label>
+      <input type="button" value="Submit" onClick={this.submitForm} />
+        type="text"
+        name="job"
+        id="job"
+        value={job}
+        onChange={this.handleChange} />
+    </form>
+  );
+}
+
+}
+export default Form;
+
+
+

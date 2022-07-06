@@ -1,0 +1,163 @@
+// index.js
+import React from 'react'
+import ReactDom from 'react-dom'
+import './index.css'
+
+	ReactDom.render(<React.StrictMode>	
+	<App/>	
+	</React.StrictMode>, document.getElementById('root'))
+
+
+
+// data.js
+const people = [
+  {
+    id: 1,
+    image:
+      'https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg',
+    name: 'maria ferguson',
+    title: 'office manager',
+    quote:
+      'Fingerstache umami squid, kinfolk subway tile selvage tumblr man braid viral kombucha gentrify fanny pack raclette pok pok mustache.',
+  },
+  {
+    id: 2,
+    image:
+      'https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883417/person-3_ipa0mj.jpg',
+    name: 'john doe',
+    title: 'regular guy',
+    quote:
+      'Gastropub sustainable tousled prism occupy. Viral XOXO roof party brunch actually, chambray listicle microdosing put a bird on it paleo subway tile squid umami.',
+  },
+  {
+    id: 3,
+    image:
+      'https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959121/person-1_aufeoq.jpg',
+    name: 'peter smith',
+    title: 'product designer',
+    quote:
+      'Drinking vinegar polaroid street art echo park, actually semiotics next level butcher master cleanse hammock flexitarian ethical paleo.',
+  },
+  {
+    id: 4,
+    image:
+      'https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883334/person-1_rfzshl.jpg',
+    name: 'susan andersen',
+    title: 'the boss',
+    quote:
+      'Marfa af yr 3 wolf moon kogi, readymade distillery asymmetrical seitan kale chips fingerstache cloud bread mustache twee messenger bag. ',
+  },
+]
+
+export default people
+
+
+// App.js
+import data from './data.js'
+import React, {useReducer} from 'react'
+import data from './data'
+
+
+function App() {
+	const initalValue = {
+	counter: 0,
+	slides: data,
+	style: 'current'
+	}	
+
+	const [state, dispatch] = useReducer(reducer, initalValue)
+	const counter = initalValue.counter
+
+	function reducer((action, state)) {
+	try{
+
+	if(action.type === 'current'){
+	state.style = 'current'
+	}
+	
+	if(action.type === 'prev') {
+	state.style = 'prev'
+	state.counter -= action.payload
+	}
+	
+	if(action.type === 'next'){
+	state.style = 'prev'
+	state.counter += action.payload
+	}
+	
+	}catch(error){
+	console.log(error)
+	}
+
+	}
+	return (
+	<div className = "div">
+	<div className = "title"> / Reviews </div>
+	<div className = "container"> 
+	{ slides.map((item, index) => {
+		if(counter == 0 && index == slides.length - 1){
+			dispatch({type: 'prev', payload: 1})	
+		}
+	
+		if(index - counter === 1 ||
+                    (counter == slides.length - 1 && index == 0){
+			dispatch({type: 'next', payload: 1})
+		}
+	
+		if(index === counter){
+			dispatch({type: 'current', payload: 1})
+		}
+
+	const {id, image, title, quote } = item
+
+	<div className = {`slider${style}`}>
+	<div className = "image">
+	<img src={image}/>
+	</div>
+	<div className = 'content'>
+	<p> {name} </p>
+	<p> {job} </p>
+	<p> {quote} </p>
+	}
+	</div>
+	</div>
+
+	<button className = "nextBtn" onClick = {() => dispatch({type: 'next', payload: 1})}> > </button>
+	<button className = "prevBtn" onClick = {() => dispatch({type: 'prev', payload: 1})}> < </button>
+	</div>
+
+	</div>
+
+	)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

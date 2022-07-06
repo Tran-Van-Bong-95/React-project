@@ -1,0 +1,179 @@
+
+firebase.firestore().collection('name').docs(id)
+
+ref collection 
+firebase.firestore().collection('name')
+
+ref docs
+firebase.firestore().collection('name').doc(id)
+
+.add ()
+
+
+.remove ()
+
+
+.update ()
+
+
+1. add()
+
+firebase.firestore().collection('name').add({})
+
+2. update (id)
+firebase.firestore().collection('name').doc(id).update({})
+				
+
+3. remove (id)
+firebase.firestore().collection('name').doc(id).delete()
+				
+
+4. remove all
+firebase.firestore().collection('name').snapShot((queryShot)
+		=>  queryShot.docs.map((doc) => doc.ref.delete())
+ 
+
+
+
+import React, {useState, useEffect} from 'react'
+
+// Component app 
+function App () {
+
+	const [value, setValue] = useState('')
+	const [list, setList] 	= useState([])
+	const [edit, setEdit] 	= useState(false)
+	const [editId, setEditId] = useState(null)
+	const [show, setShow] 	= useState({show, msg, type})
+
+	
+
+	const showAlert = (show = false, msg = '', type = '') => {
+	setShow({show, msg, type})
+	}
+
+
+	const remove = (id) => {
+	firebase.firestore().collection('grocery').doc(id).delete()
+	showAlert(true, 'remove successful', 'success)
+	}
+
+	const edit = (id) => {
+	const newList = list.find((item) => item.id !== id))	
+	setEdit(true)
+	setValue(newList.text)
+	setEditId(newList.id)
+	}
+
+	const handleSubmit = (e) => {
+	e.preventDefault()
+
+	if(!value && !edit){
+	showAlert(true, 'empty item', 'success')
+	}
+
+	if (value && !edit) {
+	firebase.firestore().collection('grocery').add({text: value, id: new Date().getTime().toString()})
+	showAlert(true, 'add item', 'success')
+	setValue('')
+	}
+
+	if(value && edit){
+	firebase.firestore().collection('grocery').doc(editId).update({
+	text: value
+	})
+	showAlert(true, 'edit successfull', 'success')
+	
+	setEdit(false)
+	setEditId(null)
+	setValue('')
+	}
+
+	}
+
+	function clearAll(){
+	firebase.firestore().collection('grocery').delete()
+	showAlert(true, 'clear all successfully', 'success')
+	}
+
+	useEffect(()=> {
+	setList([...list, firebase.firestore().collection('grocery')])
+	},[value])
+
+	return (
+
+	<div className = "grocery">
+	<div className = "alert-container">
+	<Alert	{...alert} list = {list} setAlert ={setAlert} />
+	</div>
+	<div className = "form">
+	<form onSubmit = {handleSubmit} className = "form">
+	<input 
+	type = "text"
+	value = {value}
+	onChange = {(e) => setValue(e.target.value)}
+	>
+	<button>{edit? 'edit':'submit'}<button/>
+	</form>
+	</div>
+
+	{
+	list.length > 0 && <div className = "list">
+	<List list = {list}/>
+	<button onClick={() => clearAll()}  className ="clearAll"> clearAll </button>
+	</div>
+	}
+
+	</div>
+	)
+
+}
+
+export default App
+
+
+// Alert.js 
+	import React, {useEffect} from 'react'
+
+	function Alert ({show, msg, type, list, setAlert}){
+	
+	useEffect(()=> {
+
+	setTimeout (() => {
+	setAlert({show: false, msg:'' ,type:''})
+	},2000)
+	},[list])
+
+	return (
+	<div className = "alert">
+	<p className = {type}> {msg} </p>
+	</div>
+	)
+	}
+
+	export default Alert
+
+
+// List.js
+
+	import React from 'react'
+
+	function List () {
+
+	return (
+	<div className = "container">
+	{list.map((item) => {
+	const {text, id} = item
+
+	return (
+	<div className = "item" key = {id}>
+	<span> {text}	</span>
+	<span> delete 	</span>
+	<span> edit 	</span>
+	</div>
+	)
+	})}
+	</div>
+	)
+	}
+	export default List 

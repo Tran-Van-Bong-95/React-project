@@ -1,0 +1,101 @@
+Giáo trình trên techmaster vietnam
+1. Làm quen ReactJS, React Native
+ Giới thiệu React Native
+03:11
+ Cài đặt môi trường lập trình
+ Tạo project với Expo CLI
+07:12
+ React Native Core Components
+07:57
+ Các kiểu style trong React Native
+12:03
+ SafeAreaView Component
+
+
+2. Clone Login Screen
+ TextInput & Touchable Components
+11:35
+ Expo Icon, Absolute & Relative layout
+08:46
+ Flexbox layout
+12:52
+ Hiển thị ảnh trong React Native
+07:50
+3. Xử lý logic, sự kiện trong App
+ Dimensions & Platform
+08:44
+ Sử dụng State trong React
+07:32
+ Xử lý sự kiện trong React
+4. Xử lý Form trong React Native
+ Keyboard & KeyboardAvoidingView
+04:30
+ KeyboardAwareScrollView
+07:37
+ Xử lý Form trong React Native
+08:07
+ Validate Form với Formik & Yup
+07:40
+ Chia Component & Props trong React
+14:27
+5. Clone Instagram Feed
+ ScrollView Component
+08:48
+ Sử dụng vòng lặp trong React
+10:40
+ FlatList Component
+09:56
+6. Ứng dụng Rock Paper Scissors
+ Ứng dụng Rock Paper Scissors
+03:14
+ Truyền dữ liệu giữa các Component
+11:02
+ React Native Animations
+12:12
+7. Ứng dụng Scan QR Code
+ Expo Bar Code Scanner
+04:01
+ React Native Animatable
+07:01
+8. Ứng dụng Stopwatch
+ Ứng dụng Stopwatch
+03:21
+ Tối ưu hiệu suất của app
+9. Ứng dụng BMI Calculator
+ Slider Component
+ Modal Component
+ Chia Component tái sử dụng được
+10. Ứng dụng Music Player
+ Expo AV
+ React Native Modal
+11. Ứng dụng Worldwide News
+ ActivityIndicator Component
+ Linking Component
+ FlatList nâng cao
+ React Hook useEffect
+ Kết nối API
+12. Ứng dụng Pokedex
+ React Native Elements
+ React Navigation
+ React Native Progress
+ React Hook useEffect with cleanup
+ Build app
+13. Ứng dụng đặt xe
+ Ôn tập React Navigation
+ Nhúng bản đồ Google Map
+14. Clone Gmail App
+ Ôn tập kết nối API
+ Authentication với JWT
+ Async Storage
+ MobX
+ React Native WebView
+15. Build ứng dụng
+ Build ứng dụng Android
+ Tạo app icons
+ Obfuscate
+16. Một số thư viện thông dụng
+ React Native Unimodules
+ Expo Keep Awake
+ React Native Firebase
+ React Native View Shot
+ React Native Share

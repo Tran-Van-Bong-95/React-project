@@ -1,0 +1,97 @@
+
+// index.js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './App.css'
+import App from './App'
+
+
+ReactDOM.render(
+	<React.StrictMode>
+	<App/>
+	<React.StrictMode/>, document.getElementById('root')
+	)
+
+
+
+// app.js
+import React, {useState, useEffect} from 'react'
+
+function App() {
+	const [value, setValue] = useState(new Values('#f151515').all(10))
+	const [list, setList] = useState([])
+
+	const handleSubmit = (e) => {	
+	e.preventDefault()
+
+	const color = new Values(value).all(10)
+		setList(color)
+	}
+	
+	return (
+	<div className = 'container'>
+	<form onSubmit = {handleSubmit}>
+	<div className = 'header'>
+	<input  
+	type = "text"
+	value = {value}
+	onChange = {(e) => setValue (e.tartget.value)}	
+	placeholder = '#f151515'		
+  	/>
+	</form>
+	<button> generator </button>
+	</div>
+
+	<div className = 'list'>
+	{list.map((item) => <SingleColor  {...item}>}
+	</div>
+	</div>
+	)
+
+}
+
+
+// SingleColor 
+
+import React from 'react'
+
+	
+	function SingleColor ({rgb, weight, hex}) {
+	const rgba = rgb.join('')
+	return (
+	<article style = {{backgroundColor: `rgb(${rgba})`}}>
+	<p> {weight} %</p>
+	<p> # + {hex} </p>
+	</article>
+	)
+	}
+
+export default SingleColor
+
+
+// index.css
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

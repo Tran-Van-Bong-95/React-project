@@ -1,0 +1,277 @@
+// pages
+
+1. Home.js 
+
+function Home () {
+
+	return (
+	<main>
+	<SearchForm/>
+	<Coocktails/>
+	</main>
+
+	)
+
+}
+
+
+2. About.js
+
+3. Error.js
+
+4. Loading.js 
+
+
+5. SinglePage.js
+
+function SinglePage () {
+
+
+
+}
+
+
+
+// components 
+1. Navbar.js 
+
+	function Navbar () {
+
+	return (
+
+	<navbar>
+	<div className = 'logo'>
+	<img src = {logo} alt='title'/>
+	</div>
+
+	<ul>
+	<li Link to = '/'>
+	Home 
+	</li>
+
+	<li Link to = '/about'>
+	About 
+	</li>
+
+	</ul>
+	</navbar>
+
+	)
+
+	}
+
+
+2. CooktailList.js
+
+
+3. Cooktail.js
+
+
+4. SearchForm.js 
+import React, {useParams, useEffect} from 'react'
+
+function SearchForm () {
+
+const [singlePage, setSinglePage] = useState({
+		
+	image: '',
+	category: '',
+	info: '',
+	glass: '',
+	instructions: '',
+	ingredients: ''
+
+	})
+
+const {id} = useParams()
+	
+// do similar to context 
+function searchById () {
+	const url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?i={id}`
+
+	// EDIT ID 
+	async function fetchAPI () {
+	setLoading(true)
+	try {
+	const response = await fetch(url)
+	const data = await response.json()
+	setLoading(false)
+	
+
+	const {
+	strDrink,
+	strCategory, 
+	strAlcoholic, 
+	strGlass,
+	strInstructions,
+	strInstructionsIT,
+	strDrinkThumb
+	 }  = data[0]
+	
+	setSinglePage({
+	image: strDrinkThumb,
+	category: strCategory,
+	info: strAlcoholic,
+	glass: strGlass,
+	instructions: strInstructions,
+	ingredients: strInstructionsIT
+	})
+
+	}catch(error) {
+	console.log(error)
+	setLoading(true)
+	throw new Error 'not found that data'
+	}
+}
+
+}
+
+const {image, name. category, info, glass, instructions, ingredients} = page 
+
+	return (
+
+		<div className ='singlePage'>
+		<button Link to = '/'> BACK HOME </button>
+		<section>
+		<div className = 'image'>{image} </div>
+		<h1> name : {name} </h1>
+		<p> Category: {category} <p>
+		<p> Info : {info} </p>
+		<p> Glass : {glass} </p>
+		<p> Instructions: {instructions} </p>
+		<p> Ingredients: {ingredients} </p>
+		</section>
+		</div>
+		)
+}
+
+
+5. Loading.js 
+
+function Loading () {
+	return (<p> ... Loading </p>)
+}
+
+// App.js 
+import React from 'react' 
+import {Switch, Link, Routes, Route, BrowserRouter  as Router} from 'react-router-dom'
+import './index.css'
+import Home from './Home.js'
+import About from './About.js'
+import SinglePage from './SinglePage.js'
+import Error from './Error.js'
+
+
+function App () {
+
+
+	return (
+	<Router>
+	
+	<Navbar/>
+
+	<Routes>
+
+	<Route exact path = '/'> {Home} </Route>
+	<Route exact path = '/about'> {About} </Route>
+	<Route exact path = '/singlePage/:id'> {SinglePage} </Route>
+	<Route exact path = '*'> {Error} </Route> 
+
+	</Routes>
+	</Router>
+	)
+}
+
+
+
+// context.js 
+import React, {useState, useEffect, useCallback, createContext, useContext} from 'react'
+
+const myContext = createContext() 
+const url = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s='
+ 
+function AppProvider ({children}) {
+	const [loading, setLoading] = useState(true)
+	const [value, setValue] = useState('')
+	const [list, setList] =   useState([])
+	const [error, setError] = useState(false)
+	
+	async function fetchApi () {
+	
+	try {
+
+	const response = await fetch(url)
+	const dataObject = await response.json() 
+	setLoading(false)
+	const {drinks} = dataObject
+	setList (drinks)
+
+	}catch(error) {	
+
+	setLoading(true)
+	setError (true)
+	throw new Error '{error}' 
+
+	}
+
+	}
+
+
+function Search () {
+
+const urlSearch = `url${value}`
+
+const fetchApiBaseName = async() => {
+
+	try{
+	const response = await fetch(urlSearch)
+	const dataSearch = await response.json()
+
+	setLoading(false)
+	const {drinks} = dataSearch
+	setList (drinks)
+
+	} catch (error) {
+	console.log(error)
+	setLoading(true)
+	setError(true)
+	throw new Error 'data is not found' 
+	}
+}
+
+}
+
+
+useEffect (() => {
+	fetchApi()
+	},[url])
+
+
+return (
+	<myContext.Provider  value = {{ 
+
+	loading, 
+	setLoading
+	openSinglePage,
+	setOpenSinglePage
+	value,
+	setValue
+	list
+	error,
+	Search
+	}}
+	>
+
+	{children}
+
+	</myContext.Provider>
+
+)
+
+} 
+
+
+// index.js 
+
+// index.css
+
