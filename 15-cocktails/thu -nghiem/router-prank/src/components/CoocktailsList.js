@@ -6,10 +6,13 @@ import Coocktail from './Coocktail'
 function CoocktailsList() {
   const { list } = useGlobalVariable()
   return (
-    <div className='CoocktailList'>
-      {list.map((item) => {
-        return <Coocktail {...item} />
-      })}
+    <div className='section'>
+      <h2 className='section-title'>cocktails</h2>
+      <div className='cocktails-center'>
+        {list.map((item) => {
+          return <Coocktail {...item} />
+        })}
+      </div>
     </div>
   )
 }

@@ -8,16 +8,18 @@ function SearchForm() {
     setSearchValue(value)
   }
   return (
-    <div className='searchForm'>
+    <div className='section search'>
       <h1>Search Form</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
-      </form>
+      <div className='search-form'>
+        <form onSubmit={handleSubmit} className='form-control'>
+          <input
+            type='text'
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+        </form>
+      </div>
     </div>
   )
 }
