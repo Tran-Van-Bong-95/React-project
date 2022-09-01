@@ -4,6 +4,13 @@ import Person from './Person'
 import { useGlobal } from './context'
 function App() {
   const { counter, list, remove, clearAll, refresh } = useGlobal()
+
+  // return [
+  // Don't forget the keys :)
+  //   <li key='A'>First item</li>,
+  //   <li key='B'>Second item</li>,
+  //   <li key='C'>Third item</li>,
+  // ]
   return list.length > 0 ? (
     <div className='App'>
       <div className='Counter'> {counter} birthdays today</div>
